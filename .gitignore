@@ -1,0 +1,12 @@
+
+.vs/
+packages/
+swagger.json
+VisPr Core/bin
+VisPr Core/obj
+VisPr Runtime/bin
+VisPr Runtime/obj
+VisPr Server/bin
+VisPr Server/obj
+VisPr Windows Desktop Recorder/bin
+VisPr Windows Desktop Recorder/obj
