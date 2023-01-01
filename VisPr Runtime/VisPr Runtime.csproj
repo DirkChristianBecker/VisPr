@@ -21,6 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FlaUI\src\FlaUI.Core\FlaUI.Core.csproj" />
+    <ProjectReference Include="..\FlaUI\src\FlaUI.UIA2\FlaUI.UIA2.csproj" />
+    <ProjectReference Include="..\FlaUI\src\FlaUI.UIA3\FlaUI.UIA3.csproj" />
     <ProjectReference Include="..\VisPr Core\VisPr Core.csproj" />
   </ItemGroup>
 

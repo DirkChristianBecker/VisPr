@@ -114,21 +114,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\GitHub\FlaUI\src\FlaUI.Core\FlaUI.Core.csproj">
-      <Project>{08ed1bdc-3d03-4689-bd01-7effb19b5d68}</Project>
-      <Name>FlaUI.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\GitHub\FlaUI\src\FlaUI.UIA2\FlaUI.UIA2.csproj">
-      <Project>{edf24d16-e420-4384-8814-58a7857e64b6}</Project>
-      <Name>FlaUI.UIA2</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\GitHub\FlaUI\src\FlaUI.UIA3\FlaUI.UIA3.csproj">
-      <Project>{60e51fb0-bda2-4111-9d57-a9b070d1d452}</Project>
-      <Name>FlaUI.UIA3</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Event-hook\src\EventHook\EventHook.csproj">
       <Project>{3847a7f4-3f6b-4626-af4c-8fdfba6165f2}</Project>
       <Name>EventHook</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlaUI\src\FlaUI.Core\FlaUI.Core.csproj">
+      <Project>{e3ff4a12-1156-4275-a92f-07e4e3f32a4f}</Project>
+      <Name>FlaUI.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlaUI\src\FlaUI.UIA2\FlaUI.UIA2.csproj">
+      <Project>{9db279ec-312b-496f-b013-4a4dd680651e}</Project>
+      <Name>FlaUI.UIA2</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlaUI\src\FlaUI.UIA3\FlaUI.UIA3.csproj">
+      <Project>{744145fc-62df-4c40-a404-7575a9841f3b}</Project>
+      <Name>FlaUI.UIA3</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

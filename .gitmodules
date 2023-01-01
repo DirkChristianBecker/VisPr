@@ -1,3 +1,6 @@
 [submodule "Event-hook"]
 	path = Event-hook
 	url = https://github.com/DirkChristianBecker/Event-hook.git
+[submodule "FlaUI"]
+	path = FlaUI
+	url = https://github.com/DirkChristianBecker/FlaUI.git
