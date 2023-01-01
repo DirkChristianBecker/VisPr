@@ -126,7 +126,7 @@
       <Project>{60e51fb0-bda2-4111-9d57-a9b070d1d452}</Project>
       <Name>FlaUI.UIA3</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\GitHub\windows-user-action-hook\src\EventHook\EventHook.csproj">
+    <ProjectReference Include="..\Event-hook\src\EventHook\EventHook.csproj">
       <Project>{3847a7f4-3f6b-4626-af4c-8fdfba6165f2}</Project>
       <Name>EventHook</Name>
     </ProjectReference>

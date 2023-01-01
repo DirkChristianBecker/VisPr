@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisPr Core", "VisPr Core\Vi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisPr Runtime", "VisPr Runtime\VisPr Runtime.csproj", "{97242F2A-535D-4AAE-BB40-A1C7AC63DA65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHook", "..\..\..\..\GitHub\windows-user-action-hook\src\EventHook\EventHook.csproj", "{3847A7F4-3F6B-4626-AF4C-8FDFBA6165F2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisPr Windows Desktop Recorder", "VisPr Windows Desktop Recorder\VisPr Windows Desktop Recorder.csproj", "{73E96EA8-C504-49E2-80A0-80BD21F5BF1C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlaUI.Core", "..\..\..\..\GitHub\FlaUI\src\FlaUI.Core\FlaUI.Core.csproj", "{08ED1BDC-3D03-4689-BD01-7EFFB19B5D68}"
@@ -18,6 +16,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlaUI.UIA2", "..\..\..\..\GitHub\FlaUI\src\FlaUI.UIA2\FlaUI.UIA2.csproj", "{EDF24D16-E420-4384-8814-58A7857E64B6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlaUI.UIA3", "..\..\..\..\GitHub\FlaUI\src\FlaUI.UIA3\FlaUI.UIA3.csproj", "{60E51FB0-BDA2-4111-9D57-A9B070D1D452}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventHook", "Event-hook\src\EventHook\EventHook.csproj", "{3847A7F4-3F6B-4626-AF4C-8FDFBA6165F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{97242F2A-535D-4AAE-BB40-A1C7AC63DA65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97242F2A-535D-4AAE-BB40-A1C7AC63DA65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97242F2A-535D-4AAE-BB40-A1C7AC63DA65}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3847A7F4-3F6B-4626-AF4C-8FDFBA6165F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3847A7F4-3F6B-4626-AF4C-8FDFBA6165F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3847A7F4-3F6B-4626-AF4C-8FDFBA6165F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3847A7F4-3F6B-4626-AF4C-8FDFBA6165F2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73E96EA8-C504-49E2-80A0-80BD21F5BF1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{73E96EA8-C504-49E2-80A0-80BD21F5BF1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73E96EA8-C504-49E2-80A0-80BD21F5BF1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +53,10 @@ Global
 		{60E51FB0-BDA2-4111-9D57-A9B070D1D452}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60E51FB0-BDA2-4111-9D57-A9B070D1D452}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60E51FB0-BDA2-4111-9D57-A9B070D1D452}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3847A7F4-3F6B-4626-AF4C-8FDFBA6165F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3847A7F4-3F6B-4626-AF4C-8FDFBA6165F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3847A7F4-3F6B-4626-AF4C-8FDFBA6165F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3847A7F4-3F6B-4626-AF4C-8FDFBA6165F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
