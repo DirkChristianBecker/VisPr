@@ -64,6 +64,7 @@
     <Compile Include="Algorithms\DesktopRecorder.cs" />
     <Compile Include="Algorithms\Win32.cs" />
     <Compile Include="Datamodel\ElementSelector.cs" />
+    <Compile Include="Datamodel\Events\ClipboardEvent.cs" />
     <Compile Include="Datamodel\Events\KeyboardEvent.cs" />
     <Compile Include="Datamodel\Events\MouseButtonEvent.cs" />
     <Compile Include="Datamodel\Events\MouseClickEvent.cs" />

@@ -13,5 +13,10 @@ namespace VisPrWindowsDesktopRecorder.Datamodel.Events
         {
             Text = text;
         }
+
+        public override string ToString() 
+        {
+            return $"{SequenceNumber}. ({nameof(WriteTextEvent)}) \nText:\n{Text} \n {Selectors()}";
+        }
     }
 }

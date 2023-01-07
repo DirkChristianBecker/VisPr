@@ -1,10 +1,6 @@
 ﻿using FlaUI.Core;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
 
 using FlaUI.UIA2;
 using FlaUI.UIA3;
@@ -12,7 +8,7 @@ using EventHook;
 using FlaUI.Core.AutomationElements;
 using VisPrWindowsDesktopRecorder.Datamodel.Events;
 using System.Windows.Forms;
-using System.Globalization;
+using System.Windows.Media;
 
 namespace VisPrWindowsDesktopRecorder.Algorithms
 {
@@ -125,6 +121,8 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                     RecorderMessage.RecordingStopped,
                     null));
 
+            // Collect events and combine those which logically fit together like
+            // clicks, keyboard input etc.
             var r = new List<RecordedEvent>();
             for(int i = 0; i < RecordedEvents.Count; i++)
             {
@@ -200,7 +198,10 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                     }
                     
                     r.Add(x);
+                    continue;
                 }
+
+                r.Add(element);
             }
 
             foreach(var e in r) 
@@ -252,49 +253,32 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                     null));
         }
 
-        private void OnKeyEvent(object sender, EventHook.KeyInputEventArgs e)
-        {
-            var focus = Automation.FocusedElement();
-            var selectors = ElementSelector.From(focus);
-
-            RecordedEvent evt = null;
-            if(focus.IsTextElement())
-            {
-                evt = new TextEvent(
-                    focus.AsTextBox().Text,
-                    SequenceNumber++,
-                    e.KeyData.EventType == KeyEvent.up ? KeyButtonType.Up : KeyButtonType.Down,
-                    e.KeyData.Keyname,
-                    e.KeyData.UnicodeCharacter,
-                    selectors);
-            }
-            else
-            {
-                evt = new KeyboardEvent(
-                    SequenceNumber++,
-                    e.KeyData.EventType == KeyEvent.up ? KeyButtonType.Up : KeyButtonType.Down,
-                    e.KeyData.Keyname,
-                    e.KeyData.UnicodeCharacter,
-                    selectors);
-            }
-            
-            RecordedEvents.Add(evt);
-        }
-
         private AutomationElement GetHoveredElement(int x, int y)
         {
             var e = Automation.FromPoint(new System.Drawing.Point(x, y));
             if(e == null)
             {
-                LastHoveredElement = null;
-                LastHoveredElementChanged.Invoke(this, LastHoveredElement);
+                if (LastHoveredElement != null)
+                {
+                    LastHoveredElement = null;
+                    LastHoveredElementChanged.Invoke(this, LastHoveredElement);
+                }
+                return null;
+            }
+
+            if(!e.Properties.ProcessId.IsSupported)
+            {
                 return null;
             }
 
             if(e.Properties.ProcessId.ValueOrDefault != MainWindow.Properties.ProcessId.ValueOrDefault)
             {
-                LastHoveredElement = null;
-                LastHoveredElementChanged.Invoke(this, LastHoveredElement);
+                if (LastHoveredElement != null)
+                {
+                    LastHoveredElement = null;
+                    LastHoveredElementChanged.Invoke(this, LastHoveredElement);
+                }
+
                 return null;
             }
 
@@ -310,6 +294,23 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
             }
 
             return e;
+        }
+
+        private AutomationElement GetFocusedElement()
+        {
+            var focus = Automation.FocusedElement();
+            if (focus == null || !focus.Properties.CenterPoint.IsSupported)
+            {
+                if (LastHoveredElement != null)
+                {
+                    LastHoveredElement = null;
+                    LastHoveredElementChanged.Invoke(this, LastHoveredElement);
+                }
+
+                return null;
+            }
+
+            return GetHoveredElement(focus.Properties.CenterPoint.ValueOrDefault.X, focus.Properties.CenterPoint.ValueOrDefault.Y);
         }
 
         private void Record(EventHook.MouseEventArgs e, KeyButtonType type, MouseButton b)
@@ -340,6 +341,40 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                         break;
                     }
             }
+        }
+
+        private void OnKeyEvent(object sender, EventHook.KeyInputEventArgs e)
+        {
+            var focus = GetFocusedElement();
+            if(focus == null)
+            {
+                return;
+            }
+
+            var selectors = ElementSelector.From(focus);
+
+            RecordedEvent evt = null;
+            if (focus.IsTextElement())
+            {
+                evt = new TextEvent(
+                    focus.AsTextBox().Text,
+                    SequenceNumber++,
+                    e.KeyData.EventType == KeyEvent.up ? KeyButtonType.Up : KeyButtonType.Down,
+                    e.KeyData.Keyname,
+                    e.KeyData.UnicodeCharacter,
+                    selectors);
+            }
+            else
+            {
+                evt = new KeyboardEvent(
+                    SequenceNumber++,
+                    e.KeyData.EventType == KeyEvent.up ? KeyButtonType.Up : KeyButtonType.Down,
+                    e.KeyData.Keyname,
+                    e.KeyData.UnicodeCharacter,
+                    selectors);
+            }
+
+            RecordedEvents.Add(evt);
         }
     }
 }

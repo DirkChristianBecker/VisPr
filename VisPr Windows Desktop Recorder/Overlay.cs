@@ -146,6 +146,7 @@ namespace VisPrWindowsDesktopRecorder
             {
                 return;
             }
+
             // Note: We need this because the Form.TopMost property does not respect
             // the "ShowWithoutActivation" flag, meaning the window will steal the
             // focus every time it is made visible.
