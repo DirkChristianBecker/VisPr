@@ -24,6 +24,7 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
         private EventHookFactory Factory { get; set; }
         private KeyboardWatcher KeyboardWatcher { get; set; }
         private MouseWatcher MouseWatcher { get; set; }
+        private ClipboardWatcher ClipboardWatcher { get; set; }
 
         private UInt64 SequenceNumber { get; set; }
         private List<RecordedEvent> RecordedEvents { get; set; }
@@ -49,6 +50,7 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
             Factory = new EventHookFactory();
             KeyboardWatcher = Factory.GetKeyboardWatcher();
             MouseWatcher = Factory.GetMouseWatcher();
+            ClipboardWatcher = Factory.GetClipboardWatcher();
 
             SequenceNumber = 0;
             RecordedEvents = new List<RecordedEvent>();
@@ -78,9 +80,11 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
 
             KeyboardWatcher.Start();
             MouseWatcher.Start();
+            ClipboardWatcher.Start();
 
             KeyboardWatcher.OnKeyInput += OnKeyEvent;
             MouseWatcher.OnMouseInput += OnMouseEvent;
+            ClipboardWatcher.OnClipboardModified += OnClipboardEvent;
 
             SequenceNumber = 0;
 
@@ -111,9 +115,11 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
 
             KeyboardWatcher.OnKeyInput -= OnKeyEvent;
             MouseWatcher.OnMouseInput -= OnMouseEvent;
+            ClipboardWatcher.OnClipboardModified -= OnClipboardEvent;
 
             KeyboardWatcher.Stop();
             MouseWatcher.Stop();
+            ClipboardWatcher.Stop();
 
             RecordedEvents.Add(
                 new RecorderEvent(
@@ -268,6 +274,11 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
 
             if(!e.Properties.ProcessId.IsSupported)
             {
+                if (LastHoveredElement != null)
+                {
+                    LastHoveredElement = null;
+                    LastHoveredElementChanged.Invoke(this, LastHoveredElement);
+                }
                 return null;
             }
 
@@ -310,13 +321,31 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                 return null;
             }
 
-            return GetHoveredElement(focus.Properties.CenterPoint.ValueOrDefault.X, focus.Properties.CenterPoint.ValueOrDefault.Y);
+            var point = focus.Properties.CenterPoint.ValueOrDefault;
+            if(point.IsEmpty)
+            {
+                if (LastHoveredElement != null)
+                {
+                    LastHoveredElement = null;
+                    LastHoveredElementChanged.Invoke(this, LastHoveredElement);
+                }
+
+                return null;
+            }
+
+            return GetHoveredElement(point.X, point.Y);
         }
 
         private void Record(EventHook.MouseEventArgs e, KeyButtonType type, MouseButton b)
         {
-            var selectors = ElementSelector.From(LastHoveredElement);
-            var evt = new MouseButtonEvent(SequenceNumber++, e.Point.x, e.Point.y, type, b, selectors);
+            var evt = new MouseButtonEvent(
+                SequenceNumber++, 
+                e.Point.x, 
+                e.Point.y, 
+                type, 
+                b, 
+                LastHoveredElement.Seletors());
+
             RecordedEvents.Add(evt);
         }
 
@@ -351,8 +380,6 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                 return;
             }
 
-            var selectors = ElementSelector.From(focus);
-
             RecordedEvent evt = null;
             if (focus.IsTextElement())
             {
@@ -362,7 +389,7 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                     e.KeyData.EventType == KeyEvent.up ? KeyButtonType.Up : KeyButtonType.Down,
                     e.KeyData.Keyname,
                     e.KeyData.UnicodeCharacter,
-                    selectors);
+                    focus.Seletors());
             }
             else
             {
@@ -371,10 +398,21 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                     e.KeyData.EventType == KeyEvent.up ? KeyButtonType.Up : KeyButtonType.Down,
                     e.KeyData.Keyname,
                     e.KeyData.UnicodeCharacter,
-                    selectors);
+                    focus.Seletors());
             }
 
             RecordedEvents.Add(evt);
+        }
+
+        private void OnClipboardEvent(object sender, ClipboardEventArgs e)
+        {
+            var focus = GetFocusedElement();
+            if (focus == null)
+            {
+                return;
+            }
+
+            var evt = new ClipboardEvent(e.Data, e.DataFormat, SequenceNumber++, focus.Seletors());
         }
     }
 }
