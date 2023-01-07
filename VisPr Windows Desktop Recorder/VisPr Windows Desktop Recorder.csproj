@@ -60,6 +60,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\AutomationElementExtensions.cs" />
     <Compile Include="Algorithms\DesktopRecorder.cs" />
     <Compile Include="Algorithms\Win32.cs" />
     <Compile Include="Datamodel\ElementSelector.cs" />
@@ -69,6 +70,8 @@
     <Compile Include="Datamodel\Events\MouseMoveEvent.cs" />
     <Compile Include="Datamodel\Events\RecordedEvent.cs" />
     <Compile Include="Datamodel\Events\RecorderEvent.cs" />
+    <Compile Include="Datamodel\Events\TextEvent.cs" />
+    <Compile Include="Datamodel\Events\WriteTextEvent.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>

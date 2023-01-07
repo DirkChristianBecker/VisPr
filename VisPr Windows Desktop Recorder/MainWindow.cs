@@ -29,22 +29,19 @@ namespace VisPrWindowsDesktopRecorder
                 return;
             }
 
-            btnStartRecording.Enabled = true;
-            btnStopRecording.Enabled = true;
-            btnPauseRecording.Enabled = false;
+            OnPauseButtons();
+
             Overlay.PauseRecording();
         }
 
         private void OnClickStop(object sender, EventArgs e)
         {
-            if(Overlay == null)
+            if (Overlay == null)
             {
                 return;
             }
 
-            btnStartRecording.Enabled = true;
-            btnStopRecording.Enabled = false;
-            btnPauseRecording.Enabled = false;
+            OnStopButtons();
 
             Overlay.StoppRecording();
             Overlay.Close();
@@ -58,12 +55,40 @@ namespace VisPrWindowsDesktopRecorder
                 return;
             }
 
+            OnStartButtons();
+
+            try
+            {
+                Overlay = new Overlay();
+                Overlay.StartRecording();
+            }
+            catch(Exception) 
+            {
+                /// Todo: Send a message back to caller.
+                OnStopButtons();
+                OnClickStop(sender, e);
+            }
+        }
+
+        private void OnStopButtons()
+        {
+            btnStartRecording.Enabled = true;
+            btnStopRecording.Enabled = false;
+            btnPauseRecording.Enabled = false;
+        }
+
+        private void OnStartButtons()
+        {
             btnStartRecording.Enabled = false;
             btnStopRecording.Enabled = true;
             btnPauseRecording.Enabled = true;
+        }
 
-            Overlay = new Overlay();
-            Overlay.StartRecording();
+        private void OnPauseButtons()
+        {
+            btnStartRecording.Enabled = true;
+            btnStopRecording.Enabled = true;
+            btnPauseRecording.Enabled = false;
         }
     }
 }

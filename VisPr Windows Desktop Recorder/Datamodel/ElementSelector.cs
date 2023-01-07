@@ -51,6 +51,26 @@ namespace VisPrWindowsDesktopRecorder
                 return false;
             }
 
+            if(left.DataType == typeof(int[]) && right.DataType == typeof(int[])) 
+            {
+                var l = left.Value as int[];
+                var r2 = right.Value as int[];
+                if(l.Length != r2.Length)
+                {
+                    return false;
+                }
+
+                for(int i = 0; i < l.Length; i++) 
+                {
+                    if (l[i] != r2[i]) 
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
             var r = ((object) left.Value).Equals((object) right.Value);
             return r;
         }
@@ -218,7 +238,11 @@ namespace VisPrWindowsDesktopRecorder
                 if (e.Properties.HelpText.IsSupported)
                 {
                     var p = e.Properties.HelpText;
-                    r.Add(new ElementSelector { Property = "HelpText", DataType = typeof(string), Value = p.ValueOrDefault });
+                    var text = p.ValueOrDefault;
+                    if(!string.IsNullOrEmpty(text))
+                    {
+                        r.Add(new ElementSelector { Property = "HelpText", DataType = typeof(string), Value = text.Trim() });
+                    }
                 }
 
                 if (e.Properties.IsContentElement.IsSupported)
@@ -237,6 +261,30 @@ namespace VisPrWindowsDesktopRecorder
                 {
                     var p = e.Properties.Level;
                     r.Add(new ElementSelector { Property = "Level", DataType = typeof(int), Value = p.ValueOrDefault });
+                }
+
+                if (e.Properties.AnnotationTypes.IsSupported)
+                {
+                    var p = e.Properties.AnnotationTypes;
+                    r.Add(new ElementSelector { Property = "AnnotationTypes", DataType = typeof(int[]), Value = p.ValueOrDefault });
+                }
+
+                if (e.Properties.AnnotationObjects.IsSupported)
+                {
+                    var p = e.Properties.AnnotationObjects;
+                    r.Add(new ElementSelector { Property = "AnnotationObjects", DataType = typeof(int[]), Value = p.ValueOrDefault });
+                }
+
+                if (e.Properties.AriaProperties.IsSupported)
+                {
+                    var p = e.Properties.AriaProperties;
+                    r.Add(new ElementSelector { Property = "AriaProperties", DataType = typeof(string), Value = p.ValueOrDefault });
+                }
+
+                if (e.Properties.AriaRole.IsSupported)
+                {
+                    var p = e.Properties.AriaRole;
+                    r.Add(new ElementSelector { Property = "AriaRole", DataType = typeof(string), Value = p.ValueOrDefault });
                 }
             }
             catch(Exception ex) 

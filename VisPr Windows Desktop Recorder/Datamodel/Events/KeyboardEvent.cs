@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace VisPrWindowsDesktopRecorder.Datamodel.Events
 {
@@ -39,6 +40,37 @@ namespace VisPrWindowsDesktopRecorder.Datamodel.Events
         public override string ToString()
         {
             return $"{SequenceNumber}. {KeyType} Name: {KeyName} Character: {UnicodeCharacter} ({nameof(KeyboardEvent)}) \n {Selectors()}";
+        }
+
+        public bool IsText(KeyboardEvent e)
+        {
+            if(e.ElementSelectors.Count < 1 || ElementSelectors.Count < 1)
+            {
+                return false;
+            }
+
+            if (ElementSelectors[0].Property == "AutomationId" &&
+                e.ElementSelectors[0].Property == "AutomationId")
+            {
+                return ElementSelectors[0].Value.Equals(e.ElementSelectors[0].Value);
+            }
+
+            if(ElementSelectors.Count != e.ElementSelectors.Count) 
+            {
+                return false;
+            }
+
+            for(int i = 0; i < ElementSelectors.Count; i++) 
+            {
+                if(ElementSelectors[i].Value.Equals(e.ElementSelectors[i].Value))
+                {
+                    continue;
+                }
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

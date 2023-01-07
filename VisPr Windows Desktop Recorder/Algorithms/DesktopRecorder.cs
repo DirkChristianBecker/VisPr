@@ -12,6 +12,7 @@ using EventHook;
 using FlaUI.Core.AutomationElements;
 using VisPrWindowsDesktopRecorder.Datamodel.Events;
 using System.Windows.Forms;
+using System.Globalization;
 
 namespace VisPrWindowsDesktopRecorder.Algorithms
 {
@@ -159,13 +160,46 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                     r.Add(element);
                 }
 
-                var keyBoardEvent = element as KeyboardEvent;
+                var keyBoardEvent = element as TextEvent;
                 if(keyBoardEvent != null) 
                 {
-                    // Combine all keyboard events to the same UI-Element into on
+                    // Combine all keyboard events to the same UI-Element into one
                     // write text event.
+                    TextEvent nextEvent = null;
+                    for (int j = i + 1; j < RecordedEvents.Count; j++)
+                    {                        
+                        nextEvent = RecordedEvents[j] as TextEvent;
+                        if (nextEvent == null)
+                        {
+                            break;
+                        }
 
-                    r.Add(keyBoardEvent);
+                        if(!keyBoardEvent.IsText(nextEvent))
+                        {
+                            break;
+                        }
+
+                        keyBoardEvent = nextEvent;
+                        i++;
+                    }
+
+                    WriteTextEvent x = null;
+                    if(nextEvent != null)
+                    {
+                        x = new WriteTextEvent(
+                            nextEvent.CurrentUiElmentText, 
+                            nextEvent.SequenceNumber, 
+                            nextEvent.ElementSelectors);
+                    }
+                    else
+                    {
+                        x = new WriteTextEvent(
+                            keyBoardEvent.CurrentUiElmentText, 
+                            keyBoardEvent.SequenceNumber, 
+                            keyBoardEvent.ElementSelectors);
+                    }
+                    
+                    r.Add(x);
                 }
             }
 
@@ -222,12 +256,27 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
         {
             var focus = Automation.FocusedElement();
             var selectors = ElementSelector.From(focus);
-            var evt = new KeyboardEvent(
-                SequenceNumber++, 
-                e.KeyData.EventType == KeyEvent.up ? KeyButtonType.Up : KeyButtonType.Down,
-                e.KeyData.Keyname,
-                e.KeyData.UnicodeCharacter,
-                selectors);
+
+            RecordedEvent evt = null;
+            if(focus.IsTextElement())
+            {
+                evt = new TextEvent(
+                    focus.AsTextBox().Text,
+                    SequenceNumber++,
+                    e.KeyData.EventType == KeyEvent.up ? KeyButtonType.Up : KeyButtonType.Down,
+                    e.KeyData.Keyname,
+                    e.KeyData.UnicodeCharacter,
+                    selectors);
+            }
+            else
+            {
+                evt = new KeyboardEvent(
+                    SequenceNumber++,
+                    e.KeyData.EventType == KeyEvent.up ? KeyButtonType.Up : KeyButtonType.Down,
+                    e.KeyData.Keyname,
+                    e.KeyData.UnicodeCharacter,
+                    selectors);
+            }
             
             RecordedEvents.Add(evt);
         }
