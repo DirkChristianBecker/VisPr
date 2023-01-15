@@ -28,5 +28,10 @@ namespace VisPrCore.Datamodel
         {
             return config["Database:ConnectionString"] ?? "Connection string was empty";
         }
+
+        public static string ReadWindowsRecorderPath(this IConfiguration config)
+        {
+            return config["WindowsRecorderPath"] ?? "Please provide a path to the recorder executable.";
+        }
     }
 }

@@ -2,11 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
-using VisPrRuntime;
-using VisPrRuntime.Services;
+using VisPr_Runtime.Services;
 using VisPrCore.Datamodel.Database;
-using FlaUI.UIA2.Patterns;
-using VisPr_Runtime.Services.DesktopRecorder;
+using VisPrRuntime.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,9 +47,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 builder.Services.AddScoped<IQueryDesktop, QueryDesktop>();
 
+builder.Services.AddSingleton<IRuntimeLocation, RuntimeLocation>();
+builder.Services.AddHostedService<NamedPipeServer>();
 builder.Services.AddSingleton<IQueryApplication, QueryApplication>();
-// builder.Services.AddSingleton<IDesktopRecorder, DesktopRecorder>();
-builder.Services.AddSingleton<DesktopRecorderService>();
+builder.Services.AddSingleton<IDesktopRecorderService, DesktopRecorderService>();
 
 builder.Services.AddScoped<VisPrCore.Services.JwtService>();
 

@@ -50,7 +50,8 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                 {
                     var p = e.Properties.AccessKey;
                     var el = new ElementSelector { Property = "AccessKey", DataType = typeof(string), Value = p.ValueOrDefault };
-                    if (el.Value.ToString().Length > 0)
+                    var v = el.Value as string;
+                    if (!string.IsNullOrEmpty(v))
                     {
                         r.Add(el);
                     }

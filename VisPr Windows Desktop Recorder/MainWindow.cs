@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using VisPrWindowsDesktopRecorder.Algorithms;
 
 namespace VisPrWindowsDesktopRecorder
 {
     public partial class MainWindow : Form
     {
         private Overlay Overlay { get; set; }
+        private RecorderPipeClient Client { get; set; }
         public MainWindow()
         {
             InitializeComponent();
@@ -20,7 +15,10 @@ namespace VisPrWindowsDesktopRecorder
             btnStartRecording.Enabled = true;
             btnStopRecording.Enabled = false;
             btnPauseRecording.Enabled = false;
-        }
+
+            Client = new RecorderPipeClient();
+            Client.Start();
+        }      
 
         private void OnClickPause(object sender, EventArgs e)
         {
@@ -89,6 +87,11 @@ namespace VisPrWindowsDesktopRecorder
             btnStartRecording.Enabled = true;
             btnStopRecording.Enabled = true;
             btnPauseRecording.Enabled = false;
+        }
+
+        private void OnFormClosing(object sender, FormClosingEventArgs e)
+        {
+            Client.Stop();
         }
     }
 }

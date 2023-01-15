@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Algorithms\AutomationElementExtensions.cs" />
     <Compile Include="Algorithms\DesktopRecorder.cs" />
+    <Compile Include="Algorithms\RecorderPipeClient.cs" />
     <Compile Include="Algorithms\Win32.cs" />
     <Compile Include="Datamodel\ElementSelector.cs" />
     <Compile Include="Datamodel\Events\ClipboardEvent.cs" />

@@ -73,6 +73,7 @@
             this.Controls.Add(this.btnStartRecording);
             this.Name = "MainWindow";
             this.Text = "VisPr² Windows Recorder";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
             this.ResumeLayout(false);
 
         }
