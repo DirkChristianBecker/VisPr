@@ -24,11 +24,6 @@ namespace VisPr_Runtime.Services
 
         public async Task LaunchRecorderApplication()
         {
-            if(NamedPipeServer.Instance == null) 
-            {
-                throw new Exception("Named pipe server not started.");
-            }
-
             await TerminateRecorderApplication();
             await Task.Run(() =>
             {
@@ -36,12 +31,6 @@ namespace VisPr_Runtime.Services
                 Logger.LogInformation("Launching recorder application.");
                 Application = Process.Start(path);
                 Application.WaitForInputIdle(2000);
-
-                while(!NamedPipeServer.Instance.IsClientConnected)
-                {
-                    Logger.LogInformation("Waiting for named pipe...");
-                    Thread.Sleep(1000);
-                }
 
                 Logger.LogInformation("Recorder application started");
             });

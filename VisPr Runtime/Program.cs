@@ -48,7 +48,6 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 builder.Services.AddScoped<IQueryDesktop, QueryDesktop>();
 
 builder.Services.AddSingleton<IRuntimeLocation, RuntimeLocation>();
-builder.Services.AddHostedService<NamedPipeServer>();
 builder.Services.AddSingleton<IQueryApplication, QueryApplication>();
 builder.Services.AddSingleton<IDesktopRecorderService, DesktopRecorderService>();
 
