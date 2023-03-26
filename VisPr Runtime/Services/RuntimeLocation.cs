@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using VisPrCore.Datamodel;
 
-namespace VisPr_Runtime.Services
+namespace VisPrRuntime.Services
 {
     public interface IRuntimeLocation
     {

@@ -4,3 +4,6 @@
 [submodule "FlaUI"]
 	path = FlaUI
 	url = https://github.com/DirkChristianBecker/FlaUI.git
+[submodule "named-pipe-wrapper"]
+	path = named-pipe-wrapper
+	url = https://github.com/DirkChristianBecker/named-pipe-wrapper.git

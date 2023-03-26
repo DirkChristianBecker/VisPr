@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
-using VisPr_Runtime.Services;
 using VisPrCore.Datamodel.Database;
 using VisPrRuntime.Services;
 
@@ -49,7 +48,6 @@ builder.Services.AddScoped<IQueryDesktop, QueryDesktop>();
 
 builder.Services.AddSingleton<IRuntimeLocation, RuntimeLocation>();
 builder.Services.AddSingleton<IQueryApplication, QueryApplication>();
-builder.Services.AddSingleton<IDesktopRecorderService, DesktopRecorderService>();
 
 builder.Services.AddScoped<VisPrCore.Services.JwtService>();
 

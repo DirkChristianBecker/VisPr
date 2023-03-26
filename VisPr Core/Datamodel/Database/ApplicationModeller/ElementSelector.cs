@@ -29,19 +29,18 @@ namespace VisPrCore.Datamodel.Database.ApplicationModel.ApplicationModeller
     {
         public static string DisplayString(this SelectorOperator op)
         {
-            switch (op) 
+            return op switch
             {
-                case SelectorOperator.Equals: return "==";
-                case SelectorOperator.NotEquals: return "!=";
-                case SelectorOperator.GreaterThan: return ">";
-                case SelectorOperator.LessThan: return "<";
-                case SelectorOperator.GreaterThanOrEqual: return ">=";
-                case SelectorOperator.LessThanOrEqual: return "<=";
-                case SelectorOperator.Null: return "NULL";
-                case SelectorOperator.NotNull: return "NOT NULL";
-
-                default: return "==";
-            }
+                SelectorOperator.Equals => "==",
+                SelectorOperator.NotEquals => "!=",
+                SelectorOperator.GreaterThan => ">",
+                SelectorOperator.LessThan => "<",
+                SelectorOperator.GreaterThanOrEqual => ">=",
+                SelectorOperator.LessThanOrEqual => "<=",
+                SelectorOperator.Null => "NULL",
+                SelectorOperator.NotNull => "NOT NULL",
+                _ => "==",
+            };
         }
     }
 

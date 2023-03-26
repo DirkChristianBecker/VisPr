@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>VisPr_Server</RootNamespace>
+    <RootNamespace>VisPrServer</RootNamespace>
     <UserSecretsId>e76a6d83-3019-47a2-a90c-9c8fd86d6a77</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Datamodel\Database\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

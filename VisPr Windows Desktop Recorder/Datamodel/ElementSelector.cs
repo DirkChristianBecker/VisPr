@@ -2,11 +2,28 @@
 
 namespace VisPrWindowsDesktopRecorder
 {
+    public enum SelectorDataType
+    {
+        INT,
+        INT_ARRAY,
+        FLOAT,
+        STRING,
+        CHAR,
+        REGEX,
+        XPATH,
+        RECT,
+        BOOL,
+        POINT,
+        CONTROL_TYPE,
+        CULTURE_INFO,
+        HEADING_LEVEL
+    }
+
     public class ElementSelector
     {
         public string Property { get; set; }
         public object Value { get; set; }
-        public Type DataType { get; set; }
+        public SelectorDataType DataType { get; set; }
 
         public override string ToString()
         {
@@ -40,7 +57,8 @@ namespace VisPrWindowsDesktopRecorder
                 return false;
             }
 
-            if(left.DataType == typeof(int[]) && right.DataType == typeof(int[])) 
+            if(left.DataType == SelectorDataType.INT && 
+                right.DataType == SelectorDataType.INT) 
             {
                 var l = left.Value as int[];
                 var r2 = right.Value as int[];

@@ -1,14 +1,16 @@
-﻿using FlaUI.Core;
-using System;
-using System.Collections.Generic;
+﻿using EventHook;
 
+using FlaUI.Core;
+using FlaUI.Core.AutomationElements;
 using FlaUI.UIA2;
 using FlaUI.UIA3;
-using EventHook;
-using FlaUI.Core.AutomationElements;
-using VisPrWindowsDesktopRecorder.Datamodel.Events;
+
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
 using System.Windows.Forms;
-using System.Windows.Media;
+
+using VisPrWindowsDesktopRecorder.Datamodel.Events;
 
 namespace VisPrWindowsDesktopRecorder.Algorithms
 {
@@ -100,7 +102,7 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                     null));
         }
 
-        public void Stop()
+        public string Stop()
         {
             if (State == RecorderMessage.RecordingStopped)
             {
@@ -133,28 +135,25 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
             for(int i = 0; i < RecordedEvents.Count; i++)
             {
                 var element = RecordedEvents[i];
-                var recorderEvent = element as RecorderEvent;
-                if(recorderEvent != null) 
+                if(element is RecorderEvent recorderEvent)
                 {
                     continue;
                 }
 
-                var mouseButtonEvent = element as MouseButtonEvent;
-                if (mouseButtonEvent != null)
+                if(element is MouseButtonEvent mouseButtonEvent)
                 {
                     // Check if there is a button up event
-                    if((i + 1) >= RecordedEvents.Count) 
+                    if ((i + 1) >= RecordedEvents.Count)
                     {
                         r.Add(element);
                     }
 
-                    var next = RecordedEvents[i + 1] as MouseButtonEvent;
-                    if(next == null) 
+                    if (!(RecordedEvents[i + 1] is MouseButtonEvent next))
                     {
                         r.Add(mouseButtonEvent);
                         continue;
                     }
-                    if(mouseButtonEvent.IsMouseUp(next))
+                    if (mouseButtonEvent.IsMouseUp(next))
                     {
                         r.Add(mouseButtonEvent.ToClick());
                         i++;
@@ -164,21 +163,20 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                     r.Add(element);
                 }
 
-                var keyBoardEvent = element as TextEvent;
-                if(keyBoardEvent != null) 
+                if(element is TextEvent keyBoardEvent)
                 {
                     // Combine all keyboard events to the same UI-Element into one
                     // write text event.
                     TextEvent nextEvent = null;
                     for (int j = i + 1; j < RecordedEvents.Count; j++)
-                    {                        
+                    {
                         nextEvent = RecordedEvents[j] as TextEvent;
                         if (nextEvent == null)
                         {
                             break;
                         }
 
-                        if(!keyBoardEvent.IsText(nextEvent))
+                        if (!keyBoardEvent.IsText(nextEvent))
                         {
                             break;
                         }
@@ -188,21 +186,21 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                     }
 
                     WriteTextEvent x = null;
-                    if(nextEvent != null)
+                    if (nextEvent != null)
                     {
                         x = new WriteTextEvent(
-                            nextEvent.CurrentUiElmentText, 
-                            nextEvent.SequenceNumber, 
+                            nextEvent.CurrentUiElmentText,
+                            nextEvent.SequenceNumber,
                             nextEvent.ElementSelectors);
                     }
                     else
                     {
                         x = new WriteTextEvent(
-                            keyBoardEvent.CurrentUiElmentText, 
-                            keyBoardEvent.SequenceNumber, 
+                            keyBoardEvent.CurrentUiElmentText,
+                            keyBoardEvent.SequenceNumber,
                             keyBoardEvent.ElementSelectors);
                     }
-                    
+
                     r.Add(x);
                     continue;
                 }
@@ -210,13 +208,13 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                 r.Add(element);
             }
 
-            foreach(var e in r) 
-            {
-                Console.WriteLine(e.ToString());
-            }
+            var jsonString = JsonSerializer.Serialize(r);
+            Console.WriteLine("JSON-Result: " + jsonString);
 
             LastHoveredElement = null;
             RecordingStopped?.Invoke(this, new EventArgs());
+
+            return jsonString;
         }
 
         public void Pause()
@@ -299,10 +297,7 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
             }
 
             LastHoveredElement = e;
-            if(LastHoveredElementChanged != null)
-            {
-                LastHoveredElementChanged.Invoke(this, LastHoveredElement);
-            }
+            LastHoveredElementChanged?.Invoke(this, LastHoveredElement);
 
             return e;
         }
@@ -380,7 +375,7 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                 return;
             }
 
-            RecordedEvent evt = null;
+            RecordedEvent evt;
             if (focus.IsTextElement())
             {
                 evt = new TextEvent(
@@ -412,7 +407,7 @@ namespace VisPrWindowsDesktopRecorder.Algorithms
                 return;
             }
 
-            var evt = new ClipboardEvent(e.Data, e.DataFormat, SequenceNumber++, focus.Seletors());
+            // var evt = new ClipboardEvent(e.Data, e.DataFormat, SequenceNumber++, focus.Seletors());
         }
     }
 }

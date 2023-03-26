@@ -1,16 +1,10 @@
 ﻿using FlaUI.Core.AutomationElements;
+
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using VisPrWindowsDesktopRecorder.Algorithms;
 
 namespace VisPrWindowsDesktopRecorder
@@ -55,7 +49,7 @@ namespace VisPrWindowsDesktopRecorder
             if(bounds.IsEmpty)
             {
                 Console.WriteLine("Could not get the bounds of the main window.");
-                StoppRecording();
+                StopRecording();
                 return;
             }
 
@@ -63,13 +57,8 @@ namespace VisPrWindowsDesktopRecorder
             Size = bounds.Size;
         }
 
-        public void StoppRecording()
+        public void StopRecording()
         {
-            if (Recorder == null)
-            {
-                return;
-            }
-
             Recorder.LastHoveredElementChanged -= OnLastHoveredElementChanged;
             Recorder.Stop();
         }

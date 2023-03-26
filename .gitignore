@@ -10,3 +10,7 @@ VisPr Server/bin
 VisPr Server/obj
 VisPr Windows Desktop Recorder/bin
 VisPr Windows Desktop Recorder/obj
+VisPr Interprocess Communication/bin
+VisPr Interprocess Communication/obj
+VisPr Interprocess Communication Tests/bin
+VisPr Interprocess Communication Tests/obj
